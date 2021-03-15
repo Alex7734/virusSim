@@ -1,9 +1,10 @@
 import random
 import pygame
 import math
+import numpy as np
 
 minMovement = 0.5
-maxSpeed = 3
+maxSpeed = 4 
 colors = {"healthy":"white", "sick":"red", "recovered":"blue"}
 
 
@@ -17,7 +18,9 @@ class Person():
 		self.vx = self.vy = 0
 		self.turnSick = 0
 		self.recoveryTime = random.randint(100, 150)
-
+		if not self.socialDistancing and self.status == "sick":
+			if np.random.randint(2):
+				self.socialDistancing == True               
 		if not self.socialDistancing:
 			while -minMovement < self.vx < minMovement and -minMovement < self.vy < minMovement:
 				self.vx = random.uniform(-maxSpeed, maxSpeed)
