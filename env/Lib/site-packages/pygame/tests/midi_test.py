@@ -1,11 +1,7 @@
 import unittest
-import os
-import sys
-import time
+
 
 import pygame
-import pygame.compat
-from pygame.locals import *
 
 
 class MidiInputTest(unittest.TestCase):
@@ -42,7 +38,6 @@ class MidiInputTest(unittest.TestCase):
         self.assertRaises(OverflowError, pygame.midi.Input, pow(2, 99))
 
     def test_poll(self):
-
         if not self.midi_input:
             self.skipTest("No midi Input device")
 
@@ -55,7 +50,6 @@ class MidiInputTest(unittest.TestCase):
         self.midi_input = None
 
     def test_read(self):
-
         if not self.midi_input:
             self.skipTest("No midi Input device")
 
@@ -82,6 +76,7 @@ class MidiOutputTest(unittest.TestCase):
 
     def setUp(self):
         import pygame.midi
+
         pygame.midi.init()
         m_out_id = pygame.midi.get_default_output_id()
         if m_out_id != -1:
@@ -134,7 +129,6 @@ class MidiOutputTest(unittest.TestCase):
             self.assertEqual(str(cm.exception), "Channel not between 0 and 15.")
 
     def test_set_instrument(self):
-
         if not self.midi_output:
             self.skipTest("No midi device")
         out = self.midi_output
@@ -246,6 +240,7 @@ class MidiModuleTest(unittest.TestCase):
 
     def setUp(self):
         import pygame.midi
+
         pygame.midi.init()
 
     def tearDown(self):
@@ -257,7 +252,6 @@ class MidiModuleTest(unittest.TestCase):
         self.assertTrue(c >= 0)
 
     def test_get_default_input_id(self):
-
         midin_id = pygame.midi.get_default_input_id()
         # if there is a not None return make sure it is an int.
         self.assertIsInstance(midin_id, int)
@@ -266,7 +260,6 @@ class MidiModuleTest(unittest.TestCase):
         self.assertRaises(RuntimeError, pygame.midi.get_default_output_id)
 
     def test_get_default_output_id(self):
-
         c = pygame.midi.get_default_output_id()
         self.assertIsInstance(c, int)
         self.assertTrue(c >= -1)
@@ -274,7 +267,6 @@ class MidiModuleTest(unittest.TestCase):
         self.assertRaises(RuntimeError, pygame.midi.get_default_output_id)
 
     def test_get_device_info(self):
-
         an_id = pygame.midi.get_default_output_id()
         if an_id != -1:
             interf, name, input, output, opened = pygame.midi.get_device_info(an_id)
@@ -298,7 +290,6 @@ class MidiModuleTest(unittest.TestCase):
         self.assertIsNone(info)
 
     def test_init(self):
-
         pygame.midi.quit()
         self.assertRaises(RuntimeError, pygame.midi.get_count)
         # initialising many times should be fine.
@@ -310,7 +301,6 @@ class MidiModuleTest(unittest.TestCase):
         self.assertTrue(pygame.midi.get_init())
 
     def test_quit(self):
-
         # It is safe to call this more than once.
         pygame.midi.quit()
         pygame.midi.init()
@@ -327,7 +317,6 @@ class MidiModuleTest(unittest.TestCase):
         self.assertTrue(pygame.midi.get_init())
 
     def test_time(self):
-
         mtime = pygame.midi.time()
         self.assertIsInstance(mtime, int)
         # should be close to 2-3... since the timer is just init'd.
@@ -449,8 +438,7 @@ class MidiModuleNonInteractiveTest(unittest.TestCase):
             events = pygame.midi.midis2events([midi_event_extra_data_no_timestamp], 0)
 
     def test_conversions(self):
-        """ of frequencies to midi note numbers and ansi note names.
-        """
+        """of frequencies to midi note numbers and ansi note names."""
         from pygame.midi import frequency_to_midi, midi_to_frequency, midi_to_ansi_note
 
         self.assertEqual(frequency_to_midi(27.5), 21)

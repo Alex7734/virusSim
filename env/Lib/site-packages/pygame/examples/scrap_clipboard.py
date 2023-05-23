@@ -18,9 +18,8 @@ import os
 
 import pygame as pg
 import pygame.scrap as scrap
-from pygame.compat import as_bytes
 
-BytesIO = pg.compat.get_BytesIO()
+from io import BytesIO
 
 
 def usage():
@@ -54,11 +53,11 @@ while going:
             for t in scrap.get_types():
                 r = scrap.get(t)
                 if r and len(r) > 500:
-                    print("Type %s : (large %i byte buffer)" % (t, len(r)))
+                    print(f"Type {t} : (large {len(r)} byte buffer)")
                 elif r is None:
-                    print("Type %s : None" % (t,))
+                    print(f"Type {t} : None")
                 else:
-                    print("Type %s : '%s'" % (t, r.decode("ascii", "ignore")))
+                    print(f"Type {t} : '{r.decode('ascii', 'ignore')}'")
                 if "image" in t:
                     namehint = t.split("/")[1]
                     if namehint in ["bmp", "png", "jpg"]:
@@ -69,7 +68,7 @@ while going:
         elif e.type == pg.KEYDOWN and e.key == pg.K_p:
             # Place some text into the selection.
             print("Placing clipboard text.")
-            scrap.put(pg.SCRAP_TEXT, as_bytes("Hello. This is a message from scrap."))
+            scrap.put(pg.SCRAP_TEXT, b"Hello. This is a message from scrap.")
 
         elif e.type == pg.KEYDOWN and e.key == pg.K_a:
             # Get all available types.
@@ -77,7 +76,7 @@ while going:
             types = scrap.get_types()
             print(types)
             if len(types) > 0:
-                print("Contains %s: %s" % (types[0], scrap.contains(types[0])))
+                print(f"Contains {types[0]}: {scrap.contains(types[0])}")
                 print("Contains _INVALID_: ", scrap.contains("_INVALID_"))
 
         elif e.type == pg.KEYDOWN and e.key == pg.K_i:
@@ -92,3 +91,4 @@ while going:
             usage()
     pg.display.flip()
     c.tick(40)
+pg.quit()
